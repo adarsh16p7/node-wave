@@ -1,28 +1,38 @@
-import { useState } from 'react';
-import { applyNodeChanges, applyEdgeChanges, addEdge } from 'react-flow-renderer';
-
-const initialNodes = [
-  { id: '1', type: 'input', data: { label: 'Start Node' }, position: { x: 250, y: 5 } },
-  { id: '2', type: 'custom', data: { label: 'Custom Node' }, position: { x: 250, y: 100 } },
-];
-
-const initialEdges = [
-  { id: 'e1-2', source: '1', target: '2', animated: true },
-];
+import { useState, useCallback } from "react";
+import { v4 as uuidv4 } from "uuid";
+import {
+  applyNodeChanges,
+  applyEdgeChanges,
+  addEdge,
+} from "react-flow-renderer";
 
 export const useDiagram = () => {
-  const [nodes, setNodes] = useState(initialNodes);
-  const [edges, setEdges] = useState(initialEdges);
+  const [nodes, setNodes] = useState([]);
+  const [edges, setEdges] = useState([]);
 
-  const onNodesChange = (changes) => setNodes((nds) => applyNodeChanges(changes, nds));
-  const onEdgesChange = (changes) => setEdges((eds) => applyEdgeChanges(changes, eds));
-  const onConnect = (params) => setEdges((eds) => addEdge(params, eds));
+  const onNodesChange = useCallback(
+    (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
+    []
+  );
+  const onEdgesChange = useCallback(
+    (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
+    []
+  );
+  const onConnect = useCallback(
+    (connection) => setEdges((eds) => addEdge(connection, eds)),
+    []
+  );
 
-  const addNode = () => {
+  const addNode = (type) => {
     const newNode = {
-      id: (nodes.length + 1).toString(),
-      data: { label: `Node ${nodes.length + 1}` },
+      id: uuidv4(),
+      data: { label: `${type.charAt(0).toUpperCase() + type.slice(1)} Node` },
       position: { x: Math.random() * 250, y: Math.random() * 250 },
+      type,
+      style: {
+        border: type === 'start' ? '2px solid green' : type === 'end' ? '2px solid red' : '2px solid gray',
+        padding: 10,
+      },
     };
     setNodes((nds) => nds.concat(newNode));
   };
