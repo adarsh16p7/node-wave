@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import ReactFlow, { ReactFlowProvider, MiniMap, Controls, Background } from 'react-flow-renderer';
 import { useDiagram } from './hooks/useDiagram';
 import Toolbar from './components/Toolbar';
-// import CustomNode from './components/CustomNode';
 import { exportDiagram, importDiagram } from './utils/fileOperations';
 import StartNode from './components/StartNode';
 import MiddleNode from './components/MiddleNode';

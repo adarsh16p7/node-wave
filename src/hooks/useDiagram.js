@@ -30,8 +30,8 @@ export const useDiagram = () => {
       position: { x: Math.random() * 250, y: Math.random() * 250 },
       type,
       style: {
-        border: type === 'start' ? '2px solid green' : type === 'end' ? '2px solid red' : '2px solid gray',
-        padding: 10,
+        border: 'none',
+        padding: 0,
       },
     };
     setNodes((nds) => nds.concat(newNode));
