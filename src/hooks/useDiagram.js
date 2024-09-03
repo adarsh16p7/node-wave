@@ -37,6 +37,11 @@ export const useDiagram = () => {
     setNodes((nds) => nds.concat(newNode));
   };
 
+  const deleteNode = (id) => {
+    setNodes((nds) => nds.filter((node) => node.id !== id));
+    setEdges((eds) => eds.filter((edge) => edge.source !== id && edge.target !== id));
+  };
+
   return {
     nodes,
     edges,
@@ -46,5 +51,7 @@ export const useDiagram = () => {
     onEdgesChange,
     onConnect,
     addNode,
+    deleteNode,
   };
 };
+
