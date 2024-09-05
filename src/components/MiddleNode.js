@@ -12,7 +12,7 @@ const MiddleNode = ({ data, id, onNameChange }) => {
   };
 
   return (
-    <div className="w-24 h-24 bg-yellow-600 rounded-full flex items-center justify-center text-white">
+    <div className="w-24 h-24 bg-yellow-600 flex items-center justify-center text-white">
       <input
         className="bg-transparent text-white outline-none text-center text-sm p-1 w-full max-w-full"
         value={label}

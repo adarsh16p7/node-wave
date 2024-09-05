@@ -40,13 +40,13 @@ function App() {
     setIsPanning(false);
   };
 
-  const handleNameChange = useCallback((id, newLabel) => {
-    setNodes((nds) =>
-      nds.map((node) =>
-        node.id === id ? { ...node, data: { ...node.data, label: newLabel } } : node
-      )
-    );
-  }, [setNodes]);
+  // const handleNameChange = useCallback((id, newLabel) => {
+  //   setNodes((nds) =>
+  //     nds.map((node) =>
+  //       node.id === id ? { ...node, data: { ...node.data, label: newLabel } } : node
+  //     )
+  //   );
+  // }, [setNodes]);
 
   const handleDeleteNode = useCallback((id) => {
     setNodes((nds) => nds.filter((node) => node.id !== id));

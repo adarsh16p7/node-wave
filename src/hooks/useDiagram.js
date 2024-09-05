@@ -35,6 +35,7 @@ export const useDiagram = () => {
       },
     };
     setNodes((nds) => nds.concat(newNode));
+    console.log('New Node Added: ', newNode.id);
   };
 
   const deleteNode = (id) => {
