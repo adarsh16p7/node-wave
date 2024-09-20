@@ -18,15 +18,45 @@ export const useDiagram = () => {
     (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
     []
   );
-  const onConnect = useCallback(
-    (connection) => setEdges((eds) => addEdge(connection, eds)),
-    []
-  );
+
+  const onConnect = useCallback((connection) => {
+    const { source, target } = connection;
+
+    setNodes((nds) => {
+      const sourceNode = nds.find((node) => node.id === source);
+      const targetNode = nds.find((node) => node.id === target);
+
+      if (sourceNode && targetNode) {
+        const updatedNodes = nds.map((node) => {
+          if (node.id === target) {
+            return {
+              ...node,
+              data: {
+                ...node.data,
+                input1: sourceNode.data.output || 0, // Assign source node's output to target node's input1
+              },
+            };
+          }
+          return node;
+        });
+        console.log('Nodes after connect:', updatedNodes);
+        return updatedNodes;
+      }
+      return nds;
+    });
+
+    setEdges((eds) => addEdge(connection, eds));
+  }, []);
 
   const addNode = (type) => {
     const newNode = {
       id: uuidv4(),
-      data: { label: `${type.charAt(0).toUpperCase() + type.slice(1)} Node` },
+      data: {
+        label: `${type.charAt(0).toUpperCase() + type.slice(1)} Node`,
+        input1: 0, // Initial input1 value for MiddleNode
+        input2: 0, // Initial input2 value for MiddleNode
+        output: 0, // Initial output for all nodes
+      },
       position: { x: Math.random() * 250, y: Math.random() * 250 },
       type,
       style: {
@@ -34,12 +64,20 @@ export const useDiagram = () => {
         padding: 0,
       },
     };
-    setNodes((nds) => nds.concat(newNode));
-    console.log('New Node Added: ', newNode.id);
+
+    setNodes((nds) => {
+      const updatedNodes = [...nds, newNode];
+      console.log('Updated Nodes Array after Adding:', updatedNodes);
+      return updatedNodes;
+    });
   };
 
   const deleteNode = (id) => {
-    setNodes((nds) => nds.filter((node) => node.id !== id));
+    setNodes((nds) => {
+      const updatedNodes = nds.filter((node) => node.id !== id);
+      console.log('Updated Nodes Array after Deleting:', updatedNodes);
+      return updatedNodes;
+    });
     setEdges((eds) => eds.filter((edge) => edge.source !== id && edge.target !== id));
   };
 
@@ -55,4 +93,3 @@ export const useDiagram = () => {
     deleteNode,
   };
 };
-
